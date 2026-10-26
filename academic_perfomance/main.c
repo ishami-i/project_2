@@ -30,10 +30,12 @@ int main() {
         scanf("%d", &choice);
         switch(choice) {
             case 1:
-                // Add a new student record
+                // Add a new student record using function from add_student.c
+                add_student();
                 break;
             case 2:
-                // Display all student records in a formatted table
+                // Display all student records in a formatted table from display.c
+                display_students(NULL, 0); // Placeholder, you would pass the actual student array and count
                 break;
             case 3:
                 // Sort students by grade, name, or student ID

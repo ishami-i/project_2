@@ -17,5 +17,9 @@ typedef struct Student {
 // functions declared int this directory
 void terminate_program();
 int add_student();
+void display_students(Student *students, int count);
+int insert_students(Student *students);
+void allocate_students(Student **students);
+float calculate_average_grade(Student *students, int count);
 
 #endif // MAIN_H
