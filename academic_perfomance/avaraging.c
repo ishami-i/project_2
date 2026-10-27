@@ -1,41 +1,47 @@
 #include "main.h"
 
-// calculating the avarage grade of the students
-float calculate_average_grade(Student *students) {
-    // calculating the size of the students array
-    int count = 0;
-    while (students[count].id != 0) {
-        count++;
-    }
-    if (count == 0) {
-        printf("No students available to calculate average grade.\n");
-        return 0.0f; // Return 0 if there are no students
-    }
-    for(int i = 0; i < count; i++) {
-        if (students[i].grade < 0 || students[i].grade > 100) {
-            printf("Invalid grade for student ID %d. Grade should be between 0 and 100.\n", students[i].id);
-            return -1.0f; // Return -1 to indicate an error
-        }
-    }
+// Average of all grades, using a moving pointer. Returns 0 if no records.
+float compute_average(const Database *db) {
+    if (db->count == 0) return 0.0f;
     float total = 0.0f;
-    for (int i = 0; i < count; i++) {
-        total += students[i].grade;
-    }
-    return total / count;
+    for (const Student *p = db->data; p < db->data + db->count; p++)
+        total += p->grade;
+    return total / db->count;
 }
 
-// avaraging function per course using prefix sum and count then return the avarage grade for the every course
-float calculate_average_grade_per_course(Student *students) {
-    // calculating the size of the students array
-    int count = 0;
-    while (students[count].id != 0) {
-        count++;
+void calculate_average(Database *db) {
+    if (db->count == 0) {
+        printf("No students available to calculate an average.\n");
+        return;
     }
-    // check if there are no students to avoid division by zero
-    if (count == 0) {
-        printf("No students available to calculate average grade.\n");
-        return 0.0f; // Return 0 if there are no students
+    printf("Average grade of %d students: %.2f\n", db->count, compute_average(db));
+    print_course_averages(db);
+}
+
+// Average per course
+void print_course_averages(const Database *db) {
+    if (db->count == 0) return;
+
+    const char **courses = (const char **)malloc(db->count * sizeof(char *));
+    if (courses == NULL) {
+        printf("Memory allocation failed!\n");
+        return;
     }
-    // array of courses found in the students array
-    
+    int n = 0;
+    for (const Student *p = db->data; p < db->data + db->count; p++) {
+        int found = 0;
+        for (int j = 0; j < n; j++)
+            if (strcmp(p->course, courses[j]) == 0) { found = 1; break; }
+        if (!found) courses[n++] = p->course;
+    }
+
+    printf("Average grade per course:\n");
+    for (int j = 0; j < n; j++) {
+        float total = 0.0f;
+        int cnt = 0;
+        for (const Student *p = db->data; p < db->data + db->count; p++)
+            if (strcmp(p->course, courses[j]) == 0) { total += p->grade; cnt++; }
+        printf("  %-24s %6.2f  (%d student%s)\n", courses[j], total / cnt, cnt, cnt == 1 ? "" : "s");
+    }
+    free(courses);
 }
