@@ -6,14 +6,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Project constants
-#define STUDENT_ID_HEADER  "001"
+/* ---- Project constants ---- */
+#define STUDENT_ID_HEADER  "00001"
 #define STUDENTS_FILE      "students.txt"
-#define INITIAL_CAPACITY   15 
+#define INITIAL_CAPACITY   15
 #define MAX_NAME           100
 #define MAX_COURSE         50
-#define PASS_THRESHOLD     60.0f
-#define SAFE_THRESHOLD     70.0f
+ 
+/* GPA scale used by the custom analysis: GPA = grade * 5 / 100 */
+#define MAX_GRADE          100.0f    /* highest grade                      */
+#define GPA_MAX            5.0f      /* highest GPA                        */
+#define GPA_AT_RISK        3.0f      /* GPA below this     = AT RISK       */
+#define GPA_SAFE           3.5f      /* GPA at/above this  = SAFE          */
+ 
+/* Pass mark on the 0-100 scale: GPA 3.0 = grade 60 */
+#define PASS_THRESHOLD     (GPA_AT_RISK * MAX_GRADE / GPA_MAX)
+ 
 
 // Data structures
 typedef struct Student {
