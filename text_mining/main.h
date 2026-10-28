@@ -18,5 +18,17 @@ typedef struct Text {
     int count;
 } WordStats;
 
+// the functions used 
+int count_words(WordStats *stats, int word_count);
+int read_paragraph(WordStats *stats, int max_words);
+void find_longest_word(WordStats *stats, int word_count);
+void find_longest_word(WordStats *stats, int word_count);
+void most_frequent_word(WordStats *stats, int word_count);
+void sort_words(WordStats *stats, int word_count, int (*compare)(const WordStats *, const WordStats *));
+void display_word_statistics(WordStats *stats, int word_count);
+void generate_summary_report(WordStats *stats, int word_count);
+void search_word(WordStats *stats, int word_count, const char *word);
+void avarage_word_length(WordStats *stats, int word_count);
+
 
 #endif // MAIN_H
