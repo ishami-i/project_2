@@ -56,3 +56,5 @@ dkms.conf
 *.dSYM
 *.git
 
+# mac files 
+.DS_Store
