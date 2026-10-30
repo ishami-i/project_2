@@ -103,3 +103,6 @@ Run the programs from inside their own directory, because `students.txt` and `pa
 - Compiled binaries (`academic`, `text_mining_app`, `iot_monitor`) and `.dSYM` folders are build output and are not committed.
 - Each `sample_output.txt` is a real run with the typed input not echoed.
 - Open each directory's own README for design notes, formulas and sample runs.
+
+## License
+MIT License.

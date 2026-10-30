@@ -1,6 +1,6 @@
 #include "main.h"
 
-/* Average word length over ALL words (each distinct word weighted by count). */
+// Average word length over ALL words (each distinct word weighted by count).
 double average_word_length(const Analyzer *a) {
     if (a->total_words == 0) return 0.0;
     long letters = 0;
@@ -9,7 +9,7 @@ double average_word_length(const Analyzer *a) {
     return (double)letters / (double)a->total_words;
 }
 
-/* Lexical Diversity Score = distinct words / total words  (range 0..1). */
+// Lexical Diversity Score = distinct words / total words  (range 0..1).
 double lexical_diversity(const Analyzer *a) {
     if (a->total_words == 0) return 0.0;
     return (double)a->distinct / (double)a->total_words;
@@ -21,15 +21,15 @@ const char *diversity_label(double score) {
     return "low diversity / repetitive";
 }
 
-/*  CUSTOM ANALYSIS: LEXICAL DIVERSITY SCORE
-    Purpose : show how varied the vocabulary is. A score near 1 means almost
-              every word is new; a low score means words are reused a lot.
+/*  
+CUSTOM ANALYSIS: LEXICAL DIVERSITY SCORE
     Formula : LDS = distinct words / total words
     Extra   : hapax legomena = words that occur exactly once;
               hapax ratio    = hapax / distinct words.
     Levels  : LDS >= 0.70 high, 0.40 - 0.69 moderate, < 0.40 low.
     Note    : LDS falls as texts get longer (common words repeat), so only
-              compare scores of passages of similar length. */
+              compare scores of passages of similar length. 
+*/
 void custom_analysis(Analyzer *a) {
     if (a->stats == NULL || a->total_words == 0) {
         printf("No text analysed yet. Use option 1 (file) or 2 (paste) first.\n");
@@ -58,7 +58,7 @@ void custom_analysis(Analyzer *a) {
     else                  printf("Many words are repeated; the text is repetitive or long.\n");
 }
 
-/* Prints the addresses of the key heap objects (format %p, cast to void *). */
+// Prints the addresses of the key heap objects (format %p, cast to void *).
 void memory_inspection(Analyzer *a) {
     printf("\nMemory Inspection\n--------------------------\n");
     printf("Text buffer address       : %p\n", (void *)a->text);

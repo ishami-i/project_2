@@ -1,6 +1,6 @@
 #include "main.h"
 
-/* Appends an alert (copy of the device's current alert data) to the dynamic log. */
+// Appends an alert (copy of the device's current alert data) to the dynamic log.
 void log_alert(Monitor *m, const Device *d) {
     if (m->alerts == NULL) {
         m->alerts = (Alert *)calloc(8, sizeof(Alert));

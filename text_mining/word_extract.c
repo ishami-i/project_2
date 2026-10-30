@@ -1,6 +1,7 @@
 #include "main.h"
 
-/*  TEXT-PROCESSING RULES (documented as required)
+/*  
+TEXT-PROCESSING RULES
     - A word is a run of letters/digits.
     - Case:        converted to lowercase ("The" and "the" are one word).
     - Punctuation: any other character is a separator and is dropped
@@ -12,7 +13,9 @@
                    trailing and double hyphens are separators.
     - Whitespace:  any amount of spaces/tabs/newlines separates words.
     - Length:      words longer than 39 characters are TRUNCATED to 39
-                   characters (counted in truncated_words and reported). */
+                   characters (counted in truncated_words and reported). 
+                   
+    */
 
 static int apostrophe_len(const char *p) {
     if (*p == '\'') return 1;
@@ -21,7 +24,7 @@ static int apostrophe_len(const char *p) {
     return 0;
 }
 
-/* length of a joining character (hyphen / apostrophe) at p, 0 if none */
+// length of a joining character (hyphen / apostrophe) at p, 0 if none
 static int joiner_len(const char *p) {
     if (*p == '-') return 1;
     return apostrophe_len(p);
@@ -29,12 +32,13 @@ static int joiner_len(const char *p) {
 
 /* Finds the next word at or after p using pointer traversal only.
    Copies it, lowercased, into word[WORD_MAX]. Returns the pointer just past
-   the word, or NULL when no more words exist. */
+   the word, or NULL when no more words exist. 
+   */
 const char *scan_word(const char *p, char *word, int *truncated) {
     size_t len = 0;
     *truncated = 0;
 
-    while (*p != '\0' && !isalnum((unsigned char)*p)) p++;   /* skip separators */
+    while (*p != '\0' && !isalnum((unsigned char)*p)) p++; 
     if (*p == '\0') return NULL;
 
     while (*p != '\0') {
@@ -44,7 +48,7 @@ const char *scan_word(const char *p, char *word, int *truncated) {
             p++;
         } else {
             int jl = joiner_len(p);
-            if (jl == 0 || !isalnum((unsigned char)p[jl])) break;  /* word ends */
+            if (jl == 0 || !isalnum((unsigned char)p[jl])) break;  
             c = (*p == '-') ? '-' : '\'';
             p += jl;
         }
@@ -55,7 +59,7 @@ const char *scan_word(const char *p, char *word, int *truncated) {
     return p;
 }
 
-/* Adds one word: counts a duplicate or appends a new entry (growing the array). */
+// Adds one word: counts a duplicate or appends a new entry (growing the array).
 static int add_word(Analyzer *a, const char *word) {
     for (WordStat *s = a->stats; s < a->stats + a->distinct; s++) {
         if (strcmp(s->name, word) == 0) { s->count++; return 1; }
@@ -70,13 +74,13 @@ static int add_word(Analyzer *a, const char *word) {
         a->capacity = new_cap;
     }
     WordStat *slot = a->stats + a->distinct;
-    strcpy(slot->name, word);            /* safe: word is at most 39 chars */
+    strcpy(slot->name, word);            
     slot->count = 1;
     a->distinct++;
     return 1;
 }
 
-/* Builds the word statistics from a->text. Returns 1 if at least one word. */
+// Builds the word statistics from a->text. Returns 1 if at least one word. 
 int analyze_text(Analyzer *a) {
     free(a->stats);
     a->stats = NULL; a->distinct = 0; a->capacity = 0;

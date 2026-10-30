@@ -10,7 +10,7 @@ const char *type_unit(int type) {
     return (type >= 0 && type < TYPE_COUNT) ? units[type] : "?";
 }
 
-/* Reads the union member that matches the device type (never any other). */
+// Reads the union member that matches the device type (never any other). 
 float device_value(const Device *d) {
     switch (d->type) {
         case TYPE_TEMPERATURE: return d->readings.temperature;
@@ -20,7 +20,7 @@ float device_value(const Device *d) {
     }
 }
 
-/* Writes the union member that matches the device type. */
+// Writes the union member that matches the device type.
 void set_device_value(Device *d, float v) {
     switch (d->type) {
         case TYPE_TEMPERATURE: d->readings.temperature = v; break;
@@ -36,7 +36,7 @@ int find_device_index(const Monitor *m, int id) {
     return -1;
 }
 
-/* Adds a device; grows the array with realloc. Returns 1 ok, 0 duplicate, -1 no memory. */
+// Adds a device; grows the array with realloc. Returns 1 ok, 0 duplicate, -1 no memory.
 int add_device(Monitor *m, int id, const char *name, int type) {
     if (find_device_index(m, id) >= 0) return 0;
     if (m->devices == NULL) {
@@ -101,7 +101,7 @@ void display_devices(Monitor *m) {
     printf("Devices: %d (capacity %d)\n", m->count, m->capacity);
 }
 
-/* Removes by ID, closes the gap, and shrinks the array when it is mostly empty. */
+// Removes by ID, closes the gap, and shrinks the array when it is mostly empty.
 void remove_device(Monitor *m) {
     int id;
     if (m->count == 0) { printf("No devices to remove.\n"); return; }

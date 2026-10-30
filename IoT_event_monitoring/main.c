@@ -21,12 +21,12 @@ int main(int argc, char *argv[]) {
     Monitor m = {0};
     m.running = 1;
 
-    /* random seed: time by default, or ./iot_monitor <seed> for repeatable runs */
+    // random seed: time by default, or ./iot_monitor <seed> for repeatable runs
     unsigned int seed = (argc > 1) ? (unsigned int)strtoul(argv[1], NULL, 10)
                                    : (unsigned int)time(NULL);
     srand(seed);
 
-    /* function-pointer table for the menu */
+    // function-pointer table for the menu
     MenuAction actions[] = {
         register_device,
         display_devices,
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     print_header();
     printf("Random seed: %u\n", seed);
 
-    /* starting set of devices: two of each required type */
+    // starting set of devices: two of each required type
     static const struct { int id; const char *name; int type; } demo[] = {
         {101, "Boiler-Temp",     TYPE_TEMPERATURE}, {102, "ColdRoom-Temp",   TYPE_TEMPERATURE},
         {201, "Line-Pressure",   TYPE_PRESSURE},    {202, "Tank-Pressure",   TYPE_PRESSURE},
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
         actions[choice - 1](&m);
     }
 
-    free(m.devices);     /* release all heap memory */
+    free(m.devices);
     free(m.alerts);
     return 0;
 }

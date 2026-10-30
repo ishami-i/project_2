@@ -4,11 +4,13 @@ static float rand_range(float lo, float hi) {
     return lo + (hi - lo) * ((float)rand() / (float)RAND_MAX);
 }
 
-/*  Generates the next reading for one device (only the active union member is written).
+/*  
+Generates the next reading for one device (only the active union member is written).
     First reading : uniform random value inside the type's GEN range.
     Later readings: previous value + random step (+/- STEP), clamped to the GEN range;
                     with SPIKE_PERCENT % probability the value jumps anywhere in the range.
-    Also resets the status/alert fields and remembers the previous reading. */
+    Also resets the status/alert fields and remembers the previous reading. 
+    */
 void generate_reading(Device *d) {
     float lo, hi, step;
     switch (d->type) {

@@ -32,7 +32,7 @@ int main(void) {
     a.running = 1;
     strcpy(a.source, DEFAULT_SOURCE);
 
-    /* function-pointer table: menu choice N runs actions[N-1] */
+    // function-pointer table: menu choice N runs actions[N-1]
     Operation actions[] = {
         load_text_from_file,
         read_pasted_text,
@@ -51,7 +51,7 @@ int main(void) {
 
     print_header(&a);
 
-    /* load the default paragraph so the menu works immediately */
+    // load the default paragraph so the menu works immediately
     FILE *fp = fopen(PARAGRAPH_FILE, "r");
     if (fp != NULL) {
         char chunk[128];
@@ -78,9 +78,9 @@ int main(void) {
             printf("Invalid choice. Please enter a number between 1 and %d.\n", num_actions);
             continue;
         }
-        actions[choice - 1](&a);          /* dispatch through the function pointer */
+        actions[choice - 1](&a);        
     }
 
-    text_reset(&a);                       /* free the text buffer and stats array */
+    text_reset(&a);                      
     return 0;
 }

@@ -1,6 +1,6 @@
 #include "main.h"
 
-/* Reads one line safely (never overflows buf) and strips the newline. */
+// Reads one line safely (never overflows buf) and strips the newline.
 void read_line(const char *prompt, char *buf, size_t size) {
     printf("%s", prompt);
     if (fgets(buf, (int)size, stdin) == NULL) { buf[0] = '\0'; return; }
@@ -20,7 +20,7 @@ int read_int(const char *prompt, int *out) {
     return 1;
 }
 
-/* Frees the text and the word statistics (used before loading new text). */
+// Frees the text and the word statistics (used before loading new text).
 void text_reset(Analyzer *a) {
     free(a->text);   a->text = NULL;  a->text_len = 0; a->text_cap = 0;
     free(a->stats);  a->stats = NULL; a->distinct = 0; a->capacity = 0;
@@ -28,7 +28,8 @@ void text_reset(Analyzer *a) {
 }
 
 /* Appends n bytes to the text buffer, doubling its size when full.
-   Returns 1 on success, 0 if memory could not be allocated. */
+   Returns 1 on success, 0 if memory could not be allocated. 
+*/
 int text_append(Analyzer *a, const char *chunk, size_t n) {
     if (a->text == NULL) {
         a->text = (char *)malloc(INITIAL_TEXT_CAP);
