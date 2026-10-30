@@ -1,6 +1,6 @@
 #include "main.h"
 
-/* Marks the device as ALERT and records who raised it and why. */
+// Marks the device as ALERT and records who raised it and why
 void raise_alert(Device *d, const char *cb, const char *range, const char *reason) {
     d->status = STATUS_ALERT;
     d->alert_callback = cb;
@@ -8,10 +8,10 @@ void raise_alert(Device *d, const char *cb, const char *range, const char *reaso
     snprintf(d->alert_reason, sizeof(d->alert_reason), "%s", reason);
 }
 
-/* ---- required callbacks: one per device type -------------------------- */
+// required callbacks: one per device type
 
 void temperature_monitor(Device *d) {
-    if (d->type != TYPE_TEMPERATURE) return;          /* never read a wrong union member */
+    if (d->type != TYPE_TEMPERATURE) return;
     float t = d->readings.temperature;
     char range[64], reason[96];
     snprintf(range, sizeof(range), "%.1f to %.1f C", TEMP_OK_MIN, TEMP_OK_MAX);
@@ -52,7 +52,8 @@ void battery_monitor(Device *d) {
     }
 }
 
-/*  ---- CUSTOM CALLBACK: SENSOR DRIFT DETECTOR ----------------------------
+/*
+CUSTOM CALLBACK: SENSOR DRIFT DETECTOR 
     Purpose   : catch sudden jumps that stay inside the safe range (a failing
                 sensor or a sudden event) and that the limit checks cannot see.
     Operates  : on every device type, after its type-specific callback.
@@ -61,7 +62,8 @@ void battery_monitor(Device *d) {
                 (temperature 10 C, pressure 60 hPa, battery 0.40 V).
     Skipped   : the first reading of a device (nothing to compare with).
     Result    : stores last_drift in the device; the engine counts drift
-                alerts and tracks the largest drift seen.                  */
+                alerts and tracks the largest drift seen.
+*/
 void sensor_drift_detector(Device *d) {
     float limit;
     switch (d->type) {
@@ -84,13 +86,13 @@ void sensor_drift_detector(Device *d) {
     }
 }
 
-/* ---- dispatch ----------------------------------------------------------- */
+// dispatch
 
-/* The function-pointer table: device type -> its callback. */
+// The function-pointer table: device type -> its callback.
 static const Callback type_callbacks[TYPE_COUNT] = {
-    temperature_monitor,   /* TYPE_TEMPERATURE */
-    pressure_monitor,      /* TYPE_PRESSURE    */
-    battery_monitor        /* TYPE_BATTERY     */
+    temperature_monitor,   
+    pressure_monitor,      
+    battery_monitor       
 };
 
 Callback select_callback(int type) {
@@ -106,7 +108,7 @@ const char *callback_name(Callback cb) {
     return "unknown";
 }
 
-/* Required interface: runs the given callback on the device. */
+// Required interface: runs the given callback on the device
 void process_device(struct Device *device, void (*callback)(struct Device *)) {
     if (device == NULL || callback == NULL) return;
     callback(device);
