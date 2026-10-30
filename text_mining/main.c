@@ -22,7 +22,10 @@ static void print_menu(void) {
     printf("11. Memory inspection\n");
     printf("12. Exit\n");
 }
-
+void terminate_program(Analyzer *a) {
+    printf("Exiting the program. Goodbye!\n");
+    a->running = 0;
+}
 int main(void) {
     Analyzer a = {0};
     a.selected = -1;

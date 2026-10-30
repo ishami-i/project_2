@@ -52,31 +52,39 @@ int text_append(Analyzer *a, const char *chunk, size_t n) {
     return 1;
 }
 
-/* Option: load the paragraph from a file (default PARAGRAPH_FILE). */
 void load_text_from_file(Analyzer *a) {
-    char path[256], chunk[128];
-    read_line("File name (Enter for " PARAGRAPH_FILE "): ", path, sizeof(path));
-    if (path[0] == '\0') strcpy(path, PARAGRAPH_FILE);
+    char chunk[128]; 
 
-    FILE *fp = fopen(path, "r");
-    if (fp == NULL) { perror("Error opening file"); return; }
+    // Directly open the predefined file path
+    FILE *fp = fopen(PARAGRAPH_FILE, "r");
+    if (fp == NULL) {
+        perror("Error opening file");
+        return;
+    }
 
     text_reset(a);
     size_t n;
     int ok = 1;
-    while (ok && (n = fread(chunk, 1, sizeof(chunk), fp)) > 0)
+    while (ok && (n = fread(chunk, 1, sizeof(chunk), fp)) > 0) {
         ok = text_append(a, chunk, n);
+    }
     fclose(fp);
-    if (!ok) { text_reset(a); return; }
 
-    if (strcmp(path, PARAGRAPH_FILE) == 0) strcpy(a->source, DEFAULT_SOURCE);
-    else snprintf(a->source, sizeof(a->source), "File: %.190s", path);
-    if (analyze_text(a))
-        printf("Loaded %zu characters: %ld words, %d distinct.\n",
+    if (!ok) {
+        text_reset(a);
+        return;
+    }
+
+    // Always use DEFAULT_SOURCE since it's the default predefined file
+    strcpy(a->source, DEFAULT_SOURCE);
+
+    if (analyze_text(a)) {
+        printf("Loaded %zu characters: %ld words, %d distinct.\n", 
                a->text_len, a->total_words, a->distinct);
+    }
 }
 
-/* Option: type or paste a paragraph; finish with a line containing only END. */
+
 void read_pasted_text(Analyzer *a) {
     char line[512];
     int ok = 1;
